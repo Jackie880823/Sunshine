@@ -29,7 +29,7 @@
   -->
 
 <resources>
-    <array name="forecasts">
+    <array name="week_forecasts">
         <item>Mon 6/23 - Sunny - 31/17</item>
         <item>Tue 6/24 - Foggy - 21/8</item>
         <item>Wed 6/25 - Cloudy - 22/17</item>

@@ -34,8 +34,6 @@ android {
     buildToolsVersion "25.0.0"
     defaultConfig {
 
-        resValue("string", "api_key", "&appid=e86349da176cccc09a6acaaa257f9e59")
-
         applicationId "com.jackie.sunshine.app"
         minSdkVersion 19
         targetSdkVersion 25
@@ -48,6 +46,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    buildTypes.each {
+        it.buildConfigField('String', 'OPEN_WEATHER_MAP_API_KEY', 'e86349da176cccc09a6acaaa257f9e59')
     }
 }
 
