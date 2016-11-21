@@ -33,6 +33,9 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
+
+        resValue("string", "api_key", "&appid=e86349da176cccc09a6acaaa257f9e59")
+
         applicationId "com.jackie.sunshine.app"
         minSdkVersion 19
         targetSdkVersion 25
