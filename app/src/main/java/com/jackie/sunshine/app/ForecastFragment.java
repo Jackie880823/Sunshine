@@ -107,6 +107,8 @@ public class ForecastFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 Log.d(TAG, "onOptionsItemSelected: selected action is refresh");
+                FetchWeatherTask weatherTask = new FetchWeatherTask();
+                weatherTask.execute();
                 return true;
             default:
                 break;
@@ -166,6 +168,7 @@ public class ForecastFragment extends Fragment {
                     forecastJsonStr = null;
                 }
                 forecastJsonStr = buffer.toString();
+                Log.d(TAG, "doInBackground: Forecast JSON String : " + forecastJsonStr);
             } catch (IOException e) {
                 Log.e(TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting
