@@ -30,7 +30,6 @@
 package com.jackie.sunshine.app;
 
 import android.os.Bundle;
-import android.view.Menu;
 
 public class DetailActivity extends BaseActivity {
 
@@ -43,11 +42,5 @@ public class DetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             setFragment(new DetailFragment());
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.detail, menu);
-        return true;
     }
 }
