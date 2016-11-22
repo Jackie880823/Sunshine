@@ -75,6 +75,7 @@ public class ForecastFragment extends Fragment {
     private static final String TAG = "ForecastFragment";
 
     private ArrayAdapter<String> mForecastAdapter;
+    private SharedPreferences mSharedPreferences;
 
     public ForecastFragment() {
     }
@@ -119,6 +120,8 @@ public class ForecastFragment extends Fragment {
             }
         });
 
+        initSharedPreferences();
+
         return rootView;
     }
 
@@ -140,6 +143,10 @@ public class ForecastFragment extends Fragment {
                 Log.d(TAG, "onOptionsItemSelected: selected action is refresh");
                 updateWeather();
                 return true;
+            case R.id.action_map:
+                openPreferredLocationMap();
+                return true;
+
             default:
                 break;
         }
@@ -147,16 +154,41 @@ public class ForecastFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateWeather() {SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences
-            (getActivity());
-        String location = prefs.getString(getString(R.string.pref_location_key),
+    private void openPreferredLocationMap() {
+        String location = mSharedPreferences.getString(getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
 
-        String unitsType = prefs.getString(getString(R.string.pref_units_key), getString(R.string
+        Uri geoLocation = Uri.parse("geo:0,0?")
+                .buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "openPreferredLocationMap: Couldn't call " + location + ", no receiving " +
+                    "apps installed!");
+        }
+    }
+
+    private void updateWeather() {
+
+        String location = mSharedPreferences.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        String unitsType = mSharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string
                 .pref_units_default));
 
         FetchWeatherTask weatherTask = new FetchWeatherTask();
         weatherTask.execute(location, unitsType);
+    }
+
+    private void initSharedPreferences() {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences
+            (getActivity());
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{

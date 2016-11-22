@@ -65,4 +65,5 @@
     <!-- Default value in SharedPreferences for imperial temperature unit option [CHAR LIMIT=NONE]
      -->
     <string name="pref_units_default" translatable="false">@string/pref_units_label_metric</string>
+    <string name="action_map">Map Location</string>
 </resources>
