@@ -39,6 +39,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        showHomeButton(false);
+
         if (savedInstanceState == null) {
             Fragment fragment = new ForecastFragment();
             setFragment(fragment);

@@ -38,6 +38,8 @@ public class DetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        showHomeButton(true);
+
         if (savedInstanceState == null) {
             setFragment(new DetailFragment());
         }
