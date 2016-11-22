@@ -29,13 +29,13 @@
   -->
 
 <resources>
-    <array name="week_forecasts">
-        <item>Mon 6/23 - Sunny - 31/17</item>
-        <item>Tue 6/24 - Foggy - 21/8</item>
-        <item>Wed 6/25 - Cloudy - 22/17</item>
-        <item>Thurs 6/26 - Rainy - 18/11</item>
-        <item>Fri 6/27 - Foggy - 21/10</item>
-        <item>Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18</item>
-        <item>Sun 6/29 - Sunny - 20/7</item>
+    <array name="pref_units_values">
+        <item>@string/pref_units_metric</item>
+        <item>@string/pref_units_imperial</item>
+    </array>
+
+    <array name="pref_units_options">
+        <item>@string/pref_units_label_metric</item>
+        <item>@string/pref_units_label_imperial</item>
     </array>
 </resources>

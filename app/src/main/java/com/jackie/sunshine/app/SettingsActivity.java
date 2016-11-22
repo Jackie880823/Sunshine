@@ -29,6 +29,7 @@
 
 package com.jackie.sunshine.app;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -51,15 +52,20 @@ import android.preference.PreferenceManager;
 public class SettingsActivity extends PreferenceActivity implements Preference
         .OnPreferenceChangeListener {
 
+    private SharedPreferences mSharedPreferences;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
         // TODO: Add preferences from XML
+        addPreferencesFromResource(R.xml.pref_general);
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         // TODO: Add preferences
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
     }
 
     /**
@@ -73,8 +79,13 @@ public class SettingsActivity extends PreferenceActivity implements Preference
 
         // Trigger the listener immediately with the preference's
         // current value.
-        onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference
-                .getContext()).getString(preference.getKey(), ""));
+
+        if (mSharedPreferences == null) {
+            mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(preference
+                    .getContext());
+        }
+
+        onPreferenceChange(preference, mSharedPreferences.getString(preference.getKey(), ""));
     }
 
     @Override
