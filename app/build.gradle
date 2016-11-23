@@ -30,7 +30,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
 
@@ -49,8 +49,7 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY',
-                '\"e86349da176cccc09a6acaaa257f9e59\"'
+        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', SUNSHINE_API_KEY
     }
 }
 
@@ -61,6 +60,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:support-v4:25.0.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:design:25.0.1'
     testCompile 'junit:junit:4.12'
 }
