@@ -25,7 +25,7 @@
  *             $                                                   $
  *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
  *
- *  Copyright (C) 2014 The Android Open Source Project
+ *  Copyright (C) 2016 The Android Open Source Project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -40,34 +40,6 @@
  *  limitations under the License.
  */
 
-/*
- *
- *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
- *             $                                                   $
- *             $                       _oo0oo_                     $
- *             $                      o8888888o                    $
- *             $                      88" . "88                    $
- *             $                      (| -_- |)                    $
- *             $                      0\  =  /0                    $
- *             $                    ___/`-_-'\___                  $
- *             $                  .' \\|     |$ '.                 $
- *             $                 / \\|||  :  |||$ \                $
- *             $                / _||||| -:- |||||- \              $
- *             $               |   | \\\  -  $/ |   |              $
- *             $               | \_|  ''\- -/''  |_/ |             $
- *             $               \  .-\__  '-'  ___/-. /             $
- *             $             ___'. .'  /-_._-\  `. .'___           $
- *             $          ."" '<  `.___\_<|>_/___.' >' "".         $
- *             $         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       $
- *             $         \  \ `_.   \_ __\ /__ _/   .-` /  /       $
- *             $     =====`-.____`.___ \_____/___.-`___.-'=====    $
- *             $                       `=-_-='                     $
- *             $     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   $
- *             $                                                   $
- *             $          Buddha Bless         Never Bug           $
- *             $                                                   $
- *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
- */
 package com.jackie.sunshine.app;
 
 import android.test.suitebuilder.TestSuiteBuilder;
