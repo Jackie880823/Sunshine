@@ -59,21 +59,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="@string/title_activity_detail"
             android:name=".DetailActivity"
+            android:label="@string/title_activity_detail"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
         <activity
-            android:label="@string/title_activity_settings"
             android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+
+        <provider
+            android:name=".data.WeatherProvider"
+            android:authorities="com.jackie.sunshine.app">
+        </provider>
     </application>
 
 </manifest>
