@@ -25,7 +25,7 @@
  *             $                                                   $
  *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
  *
- *  Copyright (C) 2014 The Android Open Source Project
+ *  Copyright (C) 2016 The Android Open Source Project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -42,41 +42,65 @@
 
 package com.jackie.sunshine.app;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.jackie.sunshine.app.data.WeatherContract;
 
 /**
- * Created 16/11/22.
+ * Created 16/12/12.
  *
  * @author Jackie
  * @version 1.0
  */
 
-public class BaseActivity extends AppCompatActivity {
+public class ForecastAdapter extends CursorAdapter {
+    public ForecastAdapter(Context context, Cursor c, int flags) {
+        super(context, c, flags);
+    }
 
-    private ActionBar mActionBar;
+    /**
+     * Prepare the weather high/lows for presentation.
+     * @param high
+     * @param low
+     * @return
+     */
+    private String formatHighLows(double high, double low) {
+        boolean isMetric = Utility.isMetric(mContext);
+        String highLowStr = Utility.formatTemperature(high, isMetric) + "/" + Utility
+                .formatTemperature(low, isMetric);
+        return highLowStr;
+    }
+
+    private String convertCursorRowToUXFormat(Cursor cursor) {
+        // get row indices for our cursor
+        int idxMaxTemp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
+        int idxMinTemp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
+        int idxDate = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE);
+        int idxShortDesc = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
+
+        String highAndLow = formatHighLows(cursor.getDouble(idxMaxTemp), cursor.getDouble
+                (idxMinTemp));
+
+        return Utility.formatDate(cursor.getLong(idxDate)) + " - " + cursor.getString
+                (idxShortDesc) + " - " + highAndLow;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mActionBar = getSupportActionBar();
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent,
+                false);
+        return view;
     }
 
-    protected void showHomeButton(boolean showBack) {
-        if (mActionBar != null) {
-            mActionBar.setDisplayHomeAsUpEnabled(showBack);
-        }
-    }
-
-    protected int setFragment(Fragment fragment) {
-        return getSupportFragmentManager().beginTransaction().add(R.id.container, fragment)
-                .commit();
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        TextView tv = (TextView) view;
+        tv.setText(convertCursorRowToUXFormat(cursor));
     }
 }

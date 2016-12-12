@@ -42,9 +42,13 @@
 
 package com.jackie.sunshine.app;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
@@ -80,6 +84,33 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.action_map:
+                openPreferredLocationMap();
+                return true;
+
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: ");
@@ -89,5 +120,24 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
+    }
+
+    private void openPreferredLocationMap() {
+        String location = Utility.getPreferredLocation(this);
+
+        Uri geoLocation = Uri.parse("geo:0,0?")
+                .buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "openPreferredLocationMap: Couldn't call " + location + ", no receiving " +
+                    "apps installed!");
+        }
     }
 }

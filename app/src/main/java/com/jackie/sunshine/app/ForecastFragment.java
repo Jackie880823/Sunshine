@@ -42,11 +42,9 @@
 
 package com.jackie.sunshine.app;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -57,10 +55,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.jackie.sunshine.app.data.WeatherContract;
 
 /**
  * Created 16/11/21.
@@ -73,8 +70,7 @@ public class ForecastFragment extends Fragment {
 
     private static final String TAG = "ForecastFragment";
 
-    private ArrayAdapter<String> mForecastAdapter;
-    private SharedPreferences mSharedPreferences;
+    private ForecastAdapter mForecastAdapter;
 
     public ForecastFragment() {
     }
@@ -101,25 +97,29 @@ public class ForecastFragment extends Fragment {
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.list_forecast);
 
-        mForecastAdapter = new ArrayAdapter<>(
-                getActivity(), // The current context (this activity)
-                R.layout.list_item_forecast, // The name of the layout ID.
-                R.id.tv_list_item_forecast, // The ID of the textview to populate.
-                new ArrayList<String>());
+        String locationSetting = Utility.getPreferredLocation(getActivity());
+
+        // Sort order: Ascending, by date
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry
+                .buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
+
+        Cursor cur = getActivity().getContentResolver().query(weatherForLocationUri, null, null,
+                null, sortOrder);
+
+        mForecastAdapter = new ForecastAdapter(getActivity(), cur, 0);
 
         listView.setAdapter(mForecastAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String forecast = mForecastAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra(Intent.EXTRA_TEXT, forecast);
-                startActivity(intent);
+//                String forecast = mForecastAdapter.getItem(position);
+//                Intent intent = new Intent(getActivity(), DetailActivity.class);
+//                intent.putExtra(Intent.EXTRA_TEXT, forecast);
+//                startActivity(intent);
             }
         });
-
-        initSharedPreferences();
 
         return rootView;
     }
@@ -142,9 +142,6 @@ public class ForecastFragment extends Fragment {
                 Log.d(TAG, "onOptionsItemSelected: selected action is refresh");
                 updateWeather();
                 return true;
-            case R.id.action_map:
-                openPreferredLocationMap();
-                return true;
 
             default:
                 break;
@@ -153,41 +150,12 @@ public class ForecastFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openPreferredLocationMap() {
-        String location = mSharedPreferences.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
-
-        Uri geoLocation = Uri.parse("geo:0,0?")
-                .buildUpon()
-                .appendQueryParameter("q", location)
-                .build();
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Log.d(TAG, "openPreferredLocationMap: Couldn't call " + location + ", no receiving " +
-                    "apps installed!");
-        }
-    }
-
     private void updateWeather() {
 
-        String location = mSharedPreferences.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
+        String location = Utility.getPreferredLocation(getActivity());
 
-        String unitsType = mSharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string
-                .pref_units_default));
-
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getContext(), mForecastAdapter);
-        weatherTask.execute(location, unitsType);
-    }
-
-    private void initSharedPreferences() {
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences
-            (getActivity());
+        FetchWeatherTask weatherTask = new FetchWeatherTask(getContext());
+        weatherTask.execute(location);
     }
 
 }

@@ -25,7 +25,7 @@
  *             $                                                   $
  *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
  *
- *  Copyright (C) 2014 The Android Open Source Project
+ *  Copyright (C) 2016 The Android Open Source Project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -42,41 +42,45 @@
 
 package com.jackie.sunshine.app;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
- * Created 16/11/22.
+ * Created 16/12/12.
  *
  * @author Jackie
  * @version 1.0
  */
 
-public class BaseActivity extends AppCompatActivity {
-
-    private ActionBar mActionBar;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mActionBar = getSupportActionBar();
+public class Utility {
+    public static String getPreferredLocation(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(context.getString(R.string.pref_location_key), context.getString(R
+                .string.pref_location_default));
     }
 
-    protected void showHomeButton(boolean showBack) {
-        if (mActionBar != null) {
-            mActionBar.setDisplayHomeAsUpEnabled(showBack);
+    public static boolean isMetric(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(context.getString(R.string.pref_units_key), context.getString(R
+                .string.pref_units_default)).equals(context.getString(R.string.pref_units_metric));
+    }
+
+    static String formatTemperature(double temperature, boolean isMetric) {
+        double temp;
+        if (!isMetric) {
+            temp = 9 * temperature / 5 + 32;
+        } else {
+            temp = temperature;
         }
+        return String.format("%.0f", temp);
     }
 
-    protected int setFragment(Fragment fragment) {
-        return getSupportFragmentManager().beginTransaction().add(R.id.container, fragment)
-                .commit();
+    static String formatDate(long dateInMillis) {
+        Date date = new Date(dateInMillis);
+        return DateFormat.getDateInstance().format(date);
     }
 }
