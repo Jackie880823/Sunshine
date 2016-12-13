@@ -74,7 +74,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String TAG = "ForecastFragment";
 
-    private static final int FORECAST_LOADER = 0x3e8;
+    private static final int FORECAST_LOADER_ID = 0x3e8;
 
     private static final String[] FORECAST_COLUMNS = {
             //In this case the id needs to be fully qualified with a table name, since
@@ -158,7 +158,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+        getLoaderManager().initLoader(FORECAST_LOADER_ID, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -217,5 +217,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mForecastAdapter.swapCursor(null);
+    }
+
+    public void onLocationChange() {
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
     }
 }

@@ -52,7 +52,10 @@ import android.view.MenuItem;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
-    
+    public static final String FORECAST_FRAGMENT_TAG = TAG;
+
+    private String mLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +64,7 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             Fragment fragment = new ForecastFragment();
-            setFragment(fragment);
+            setFragment(fragment, FORECAST_FRAGMENT_TAG);
         }
     }
 
@@ -120,6 +123,15 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
+
+        String location = Utility.getPreferredLocation(this);
+        if (!location.equals(mLocation)) {
+            ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager()
+                    .findFragmentByTag(FORECAST_FRAGMENT_TAG);
+            fragment.onLocationChange();
+            mLocation = location;
+        }
+
     }
 
     private void openPreferredLocationMap() {

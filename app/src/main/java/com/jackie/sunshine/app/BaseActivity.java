@@ -43,6 +43,7 @@
 package com.jackie.sunshine.app;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -77,6 +78,10 @@ public class BaseActivity extends AppCompatActivity {
 
     protected int setFragment(Fragment fragment) {
         return getSupportFragmentManager().beginTransaction().add(R.id.container, fragment)
+                .commit();
+    }
+    protected int setFragment(Fragment fragment, @Nullable String tag) {
+        return getSupportFragmentManager().beginTransaction().add(R.id.container, fragment, tag)
                 .commit();
     }
 }
