@@ -42,6 +42,7 @@
 
 package com.jackie.sunshine.app;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -73,7 +74,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String TAG = "ForecastFragment";
 
-    public static final int FORECAST_LOADER = 0x3e8;
+    private static final int FORECAST_LOADER = 0x3e8;
 
     private static final String[] FORECAST_COLUMNS = {
             //In this case the id needs to be fully qualified with a table name, since
@@ -90,8 +91,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.LocationEntry.COLUMN_COORD_LAT,
-            WeatherContract.LocationEntry.COLUMN_COORD_LONG
-    };
+            WeatherContract.LocationEntry.COLUMN_COORD_LONG};
 
     // These indices are tied to FORECAST_COLUMNS.
     //If FORECAST_COLUMNS changes, these must change.
@@ -138,10 +138,18 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //                String forecast = mForecastAdapter.getItem(position);
-                //                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                //                intent.putExtra(Intent.EXTRA_TEXT, forecast);
-                //                startActivity(intent);
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+
+                if (cursor != null) {
+                    String locationSetting = Utility.getPreferredLocation(getContext());
+                    Uri data = WeatherContract.WeatherEntry.buildWeatherLocationWithDate
+                            (locationSetting, cursor.getLong(COL_WEATHER_DATE));
+
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.setData(data);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -197,7 +205,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry
                 .buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
-        return new CursorLoader(getContext(), weatherForLocationUri, FORECAST_COLUMNS, null, null, sortOrder);
+        return new CursorLoader(getContext(), weatherForLocationUri, FORECAST_COLUMNS, null,
+                null, sortOrder);
     }
 
     @Override

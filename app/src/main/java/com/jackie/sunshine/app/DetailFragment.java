@@ -44,11 +44,18 @@ package com.jackie.sunshine.app;
 
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,14 +64,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jackie.sunshine.app.data.WeatherContract;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TAG = "DetailFragment";
 
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
+    public static final int DETAIL_LOAD_ID = 0x3e9;
+
+
+    private static final String[] DETAIL_COLUMS = {
+            //In this case the id needs to be fully qualified with a table name, since
+            //the content provider joins the location & weather tables in the background
+            // (both have an _id column)
+            // On one hand, that's annoying.  On the other, You can search the weather table
+            // using the location set by the user, which is only in the Location table.
+            // So the convenience is worth it.
+            WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
+            WeatherContract.WeatherEntry.COLUMN_DATE,
+            WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
+    };
+
+    static final int COL_WEATHER_ID = 0;
+    static final int COL_WEATHER_DATE = 1;
+    static final int COL_WEATHER_DESC = 2;
+    static final int COL_WEATHER_MAX_TEMP = 3;
+    static final int COL_WEATHER_MIN_TEMP = 4;
+
     private String mForecastStr;
+    private TextView tvDetail;
+    private ShareActionProvider mShareAction;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -82,15 +117,14 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
-        // The detail Activity called via intent.  Inspect the intent for forecast data.
-        Intent intent = getActivity().getIntent();
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-            TextView tvForecast = (TextView) rootView.findViewById(R.id.tv_detail);
-            tvForecast.setText(mForecastStr);
-        }
+        tvDetail = (TextView) rootView.findViewById(R.id.tv_detail);
         return  rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(DETAIL_LOAD_ID, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -99,17 +133,11 @@ public class DetailFragment extends Fragment {
 
         MenuItem shareMenu = menu.findItem(R.id.action_share);
 
-        ShareActionProvider shareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenu);
+        mShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenu);
 
-        shareAction.setShareIntent(createShareIntent());
-        shareAction.setOnShareTargetSelectedListener(new ShareActionProvider
-                .OnShareTargetSelectedListener() {
-            @Override
-            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
-                startActivity(intent);
-                return true;
-            }
-        });
+        if (!TextUtils.isEmpty(mForecastStr)) {
+            mShareAction.setShareIntent(createShareIntent());
+        }
     }
 
     private Intent createShareIntent() {
@@ -121,4 +149,41 @@ public class DetailFragment extends Fragment {
         return shareIntent;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Intent intent = getActivity().getIntent();
+        if (intent == null) {
+            return null;
+        }
+
+        Uri uri = intent.getData();
+        CursorLoader result = new CursorLoader(getContext(), uri, DETAIL_COLUMS, null, null, null);
+        return result;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(TAG, "onLoadFinished: ");
+        if (!data.moveToFirst()) return;
+
+        String dateString = Utility.formatDate(data.getLong(COL_WEATHER_DATE));
+
+        String weatherDescription = data.getString(COL_WEATHER_DESC);
+
+        boolean isMetric = Utility.isMetric(getContext());
+
+        String high = Utility.formatTemperature(data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
+        String low = Utility.formatTemperature(data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
+
+        mForecastStr = String.format("%s - %s - %s/%s", dateString, weatherDescription, high, low);
+
+        tvDetail.setText(mForecastStr);
+
+        if (mShareAction != null) {
+            mShareAction.setShareIntent(createShareIntent());
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) { }
 }
