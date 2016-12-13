@@ -50,8 +50,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jackie.sunshine.app.data.WeatherContract;
-
 /**
  * Created 16/12/12.
  *
@@ -66,6 +64,7 @@ public class ForecastAdapter extends CursorAdapter {
 
     /**
      * Prepare the weather high/lows for presentation.
+     *
      * @param high
      * @param low
      * @return
@@ -78,17 +77,12 @@ public class ForecastAdapter extends CursorAdapter {
     }
 
     private String convertCursorRowToUXFormat(Cursor cursor) {
-        // get row indices for our cursor
-        int idxMaxTemp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP);
-        int idxMinTemp = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP);
-        int idxDate = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE);
-        int idxShortDesc = cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC);
 
-        String highAndLow = formatHighLows(cursor.getDouble(idxMaxTemp), cursor.getDouble
-                (idxMinTemp));
+        String highAndLow = formatHighLows(cursor.getDouble(ForecastFragment
+                .COL_WEATHER_MAX_TEMP), cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP));
 
-        return Utility.formatDate(cursor.getLong(idxDate)) + " - " + cursor.getString
-                (idxShortDesc) + " - " + highAndLow;
+        return Utility.formatDate(cursor.getLong(ForecastFragment.COL_WEATHER_DATE)) + " - " +
+                cursor.getString(ForecastFragment.COL_WEATHER_DESC) + " - " + highAndLow;
     }
 
     @Override
