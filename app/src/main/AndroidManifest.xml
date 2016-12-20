@@ -77,8 +77,16 @@
 
         <provider
             android:name=".data.WeatherProvider"
-            android:authorities="com.jackie.sunshine.app">
+            android:authorities="com.jackie.sunshine.app"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.jackie.sunshine.app.GET_WEATHER_DATE">
         </provider>
     </application>
+
+    <permission
+        android:name="com.jackie.sunshine.app.GET_WEATHER_DATE"
+        android:label="get weather date"
+        android:protectionLevel="dangerous"/>
 
 </manifest>
