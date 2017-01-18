@@ -44,6 +44,7 @@ package com.jackie.sunshine.app;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.DrawableRes;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,8 +106,19 @@ public class ForecastAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         // Read weather icon ID from cursor
-        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
         // Use placeholder image for now
+        @DrawableRes
+        int iconRes = R.mipmap.ic_launcher;
+        switch (getItemViewType(cursor.getPosition())) {
+            case VIEW_TYPE_TODAY:
+                iconRes = Utility.getArtResourceForWeatherCondition(weatherId);
+                break;
+            case VIEW_TYPE_FUTURE_DAY:
+                iconRes = Utility.getIconResourceForWeatherCondition(weatherId);
+                break;
+        }
+        viewHolder.iconView.setImageResource(iconRes);
 
         // Read date from cursor
         long dataInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);

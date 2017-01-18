@@ -142,6 +142,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
+        mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mTvDate = (TextView) rootView.findViewById(R.id.detail_date_text);
         mTvFriendlyDate = (TextView) rootView.findViewById(R.id.detail_day_text);
         mTvDescription = (TextView) rootView.findViewById(R.id.detail_forecast_text);
@@ -199,6 +200,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (data == null || !data.moveToFirst()) return;
 
         Context context = getContext();
+
+        int weatherId = data.getInt(COL_WEATHER_CONDITION_ID);
+        mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
         // Read date from cursor and update views for day of week and date
         long date = data.getLong(COL_WEATHER_DATE);
