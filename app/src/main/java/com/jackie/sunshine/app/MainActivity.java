@@ -45,26 +45,35 @@ package com.jackie.sunshine.app;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
-    public static final String FORECAST_FRAGMENT_TAG = TAG;
+    public static final String FORECAST_FRAGMENT_TAG = "FORECAST_FRAGMENT_TAG";
+    public static final String DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT_TAG";
 
     private String mLocation;
+    private boolean mTwoPane;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
+        mLocation = Utility.getPreferredLocation(this);
         showHomeButton(false);
 
-        if (savedInstanceState == null) {
-            Fragment fragment = new ForecastFragment();
-            setFragment(fragment, FORECAST_FRAGMENT_TAG);
+        mTwoPane = findViewById(R.id.weather_detail_container) != null;
+
+        if (mTwoPane) {
+            DetailFragment detailFragment = new DetailFragment();
+            setFragment(R.id.weather_detail_container, detailFragment, DETAIL_FRAGMENT_TAG);
         }
     }
 
@@ -127,7 +136,7 @@ public class MainActivity extends BaseActivity {
         String location = Utility.getPreferredLocation(this);
         if (!location.equals(mLocation)) {
             ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager()
-                    .findFragmentByTag(FORECAST_FRAGMENT_TAG);
+                    .findFragmentById(R.id.fragment_forecast);
             fragment.onLocationChange();
             mLocation = location;
         }

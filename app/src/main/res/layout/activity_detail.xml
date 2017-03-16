@@ -26,7 +26,7 @@
   ~             $                                                   $
   ~             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   ~
-  ~  Copyright (C) 2014 The Android Open Source Project
+  ~  Copyright (C) 2017 Jackie's The Android Open Source Project
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
   ~  you may not use this file except in compliance with the License.
@@ -41,14 +41,19 @@
   ~  limitations under the License.
   -->
 
-
-<!-- TODO: Update blank fragment layout -->
-<ListView
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_forecast"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ForecastFragment"
-    tools:listitem="@layout/list_item_forecast"
-    tools:showIn="@layout/activity_main"/>
+    android:fitsSystemWindows="true">
+
+    <include
+        layout="@layout/layout_title_bar"/>
+
+    <FrameLayout
+        android:id="@+id/weather_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</android.support.design.widget.CoordinatorLayout>
+

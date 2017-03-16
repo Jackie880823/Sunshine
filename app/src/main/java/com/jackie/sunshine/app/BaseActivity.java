@@ -43,6 +43,8 @@
 package com.jackie.sunshine.app;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -56,14 +58,17 @@ import android.support.v7.widget.Toolbar;
  * @version 1.0
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private ActionBar mActionBar;
+
+    @LayoutRes
+    protected abstract int getLayoutId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
+        setContentView(getLayoutId());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,11 +82,16 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected int setFragment(Fragment fragment) {
-        return getSupportFragmentManager().beginTransaction().add(R.id.container, fragment)
-                .commit();
+        return setFragment(fragment, null);
     }
+
     protected int setFragment(Fragment fragment, @Nullable String tag) {
-        return getSupportFragmentManager().beginTransaction().add(R.id.container, fragment, tag)
-                .commit();
+        return setFragment(R.id.weather_detail_container, fragment, tag);
+    }
+
+    protected int setFragment(@IdRes int resId, Fragment fragment, @Nullable String tag) {
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+        return transaction.replace(resId, fragment, tag).commit();
     }
 }

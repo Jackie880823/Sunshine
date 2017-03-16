@@ -41,11 +41,14 @@
   ~  limitations under the License.
   -->
 
-<ScrollView
+
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.jackie.sunshine.app.DetailFragment">
 
     <LinearLayout
@@ -128,4 +131,4 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

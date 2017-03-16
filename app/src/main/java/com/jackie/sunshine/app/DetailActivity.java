@@ -1,4 +1,3 @@
-
 /*
  *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
  *             $                                                   $
@@ -48,13 +47,18 @@ import android.os.Bundle;
 public class DetailActivity extends BaseActivity {
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.activity_detail;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         showHomeButton(true);
 
         if (savedInstanceState == null) {
-            setFragment(new DetailFragment());
+            setFragment(R.id.weather_detail_container, new DetailFragment(), null);
         }
     }
 }
