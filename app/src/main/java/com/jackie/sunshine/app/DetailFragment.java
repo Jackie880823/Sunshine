@@ -136,9 +136,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         setHasOptionsMenu(true);
     }
 
+    public void onLocationChanged(String newLocation) {
+
+    }
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -151,7 +156,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mTvHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_text);
         mTvWindView = (TextView) rootView.findViewById(R.id.detail_wind_text);
         mTvPressure = (TextView) rootView.findViewById(R.id.detail_pressure_text);
-        return  rootView;
+        return rootView;
     }
 
     @Override
@@ -190,8 +195,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         Uri uri = intent.getData();
-        CursorLoader result = new CursorLoader(getContext(), uri, DETAIL_COLUMS, null, null, null);
-        return result;
+        return new CursorLoader(getContext(), uri, DETAIL_COLUMS, null, null, null);
     }
 
     @Override
@@ -218,14 +222,24 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         boolean isMetric = Utility.isMetric(context);
 
         // Read high temperature from cursor and update view
-        String high = Utility.formatTemperature(context, data.getDouble(COL_WEATHER_MAX_TEMP)
-                , isMetric);
+        String high = Utility.formatTemperature(context, data.getDouble(COL_WEATHER_MAX_TEMP),
+                isMetric);
         mTvHighTemp.setText(high);
 
         // Read low temperature from cursor and update view
         String low = Utility.formatTemperature(context, data.getDouble(COL_WEATHER_MIN_TEMP),
                 isMetric);
         mTvLowTemp.setText(low);
+
+        // Read humidity from cursor and update view
+        float humidity = data.getFloat(COL_WEATHER_HUMIDITY);
+        mTvHumidityView.setText(getActivity().getString(R.string.format_humidity, humidity));
+
+        // Read wind speed and direction from cursor and update view
+        float windSpeedStr = data.getFloat(COL_WEATHER_WIND_SPEED);
+        float windDirStr = data.getFloat(COL_WEATHER_DEGREES);
+        mTvWindView.setText(Utility.getFormattedWind(getActivity(), windSpeedStr, windDirStr));
+
 
         // Read pressure from cursor and update view
         float pressure = data.getFloat(COL_WEATHER_PRESSURE);
