@@ -74,6 +74,7 @@ import com.jackie.sunshine.app.data.WeatherContract;
  */
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "DetailFragment";
+    public static final String DETAIL_URI = "URI";
 
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
     public static final int DETAIL_LOAD_ID = 0x3e9;
@@ -124,6 +125,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private String mForecastStr;
     private ShareActionProvider mShareAction;
+    private Uri mUri;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -144,6 +146,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
+        }
+
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -189,13 +196,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Intent intent = getActivity().getIntent();
-        if (intent == null || intent.getData() == null) {
-            return null;
+        if (mUri != null) {
+            return new CursorLoader(getContext(), mUri, DETAIL_COLUMS, null, null, null);
         }
-
-        Uri uri = intent.getData();
-        return new CursorLoader(getContext(), uri, DETAIL_COLUMS, null, null, null);
+        return null;
     }
 
     @Override

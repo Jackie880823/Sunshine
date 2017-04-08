@@ -58,7 +58,13 @@ public class DetailActivity extends BaseActivity {
         showHomeButton(true);
 
         if (savedInstanceState == null) {
-            setFragment(R.id.weather_detail_container, new DetailFragment(), null);
+
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
+
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(arguments);
+            setFragment(R.id.weather_detail_container, fragment, null);
         }
     }
 }

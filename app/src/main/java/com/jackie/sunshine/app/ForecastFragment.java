@@ -84,14 +84,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             // using the location set by the user, which is only in the Location table.
             // So the convenience is worth it.
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
-            WeatherContract.WeatherEntry.COLUMN_DATE,
-            WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
-            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
-            WeatherContract.LocationEntry.COLUMN_COORD_LAT,
-            WeatherContract.LocationEntry.COLUMN_COORD_LONG};
+            WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.WeatherEntry
+            .COLUMN_SHORT_DESC, WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, WeatherContract
+            .WeatherEntry.COLUMN_MIN_TEMP, WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
+            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, WeatherContract.LocationEntry
+            .COLUMN_COORD_LAT, WeatherContract.LocationEntry.COLUMN_COORD_LONG};
 
     // These indices are tied to FORECAST_COLUMNS.
     //If FORECAST_COLUMNS changes, these must change.
@@ -104,8 +101,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
+    public static final String EXTRA_POSITION = "position";
 
     private ForecastAdapter mForecastAdapter;
+    private ListView mListView;
+
+    private int mPosition = ListView.INVALID_POSITION;
+
+    private Callback callback;
 
     public ForecastFragment() {
     }
@@ -130,12 +133,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.list_forecast);
+        mListView = (ListView) rootView.findViewById(R.id.list_forecast);
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
-        listView.setAdapter(mForecastAdapter);
+        mListView.setAdapter(mForecastAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
@@ -145,15 +148,26 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     Uri data = WeatherContract.WeatherEntry.buildWeatherLocationWithDate
                             (locationSetting, cursor.getLong(COL_WEATHER_DATE));
 
+                    callback.onItemSelected(data);
+
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.setData(data);
                     startActivity(intent);
                 }
+                mPosition = position;
 
             }
         });
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_POSITION)) {
+            mPosition = savedInstanceState.getInt(EXTRA_POSITION);
+        }
+
         return rootView;
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
     }
 
     @Override
@@ -166,6 +180,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onStart() {
         super.onStart();
         updateWeather();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(EXTRA_POSITION, mPosition);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -212,6 +234,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mForecastAdapter.swapCursor(data);
+        if (mPosition != ListView.INVALID_POSITION) {
+            mListView.smoothScrollToPosition(mPosition);
+        }
     }
 
     @Override
@@ -222,5 +247,21 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLocationChange() {
         updateWeather();
         getLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mForecastAdapter.setUserTodayLayout(useTodayLayout);
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        void onItemSelected(Uri dateUri);
     }
 }

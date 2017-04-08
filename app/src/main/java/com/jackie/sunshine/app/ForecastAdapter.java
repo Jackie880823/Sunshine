@@ -63,6 +63,7 @@ public class ForecastAdapter extends CursorAdapter {
     private final int VIEW_TYPE_COUNT = 2;
     private final int VIEW_TYPE_TODAY = 0;
     private final int VIEW_TYPE_FUTURE_DAY = 1;
+    private boolean userTodayLayout = true;
 
     public static class ViewHolder {
 
@@ -142,9 +143,14 @@ public class ForecastAdapter extends CursorAdapter {
         viewHolder.lowView.setText(Utility.formatTemperature(context, low, isMetric));
     }
 
+    public void setUserTodayLayout(boolean userTodayLayout) {
+        this.userTodayLayout = userTodayLayout;
+    }
+
+
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        return position == 0 && userTodayLayout ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     @Override

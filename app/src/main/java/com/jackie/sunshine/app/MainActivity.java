@@ -49,13 +49,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ForecastFragment.Callback{
     private static final String TAG = "MainActivity";
     public static final String FORECAST_FRAGMENT_TAG = "FORECAST_FRAGMENT_TAG";
     public static final String DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT_TAG";
 
     private String mLocation;
     private boolean mTwoPane;
+    private ForecastFragment mFragment;
 
     @Override
     protected int getLayoutId() {
@@ -74,7 +75,13 @@ public class MainActivity extends BaseActivity {
         if (mTwoPane) {
             DetailFragment detailFragment = new DetailFragment();
             setFragment(R.id.weather_detail_container, detailFragment, DETAIL_FRAGMENT_TAG);
+        } else {
+            mActionBar.setElevation(0f);
         }
+
+        mFragment = (ForecastFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_forecast);
+        mFragment.setCallback(this);
     }
 
     @Override
@@ -135,9 +142,7 @@ public class MainActivity extends BaseActivity {
 
         String location = Utility.getPreferredLocation(this);
         if (!location.equals(mLocation)) {
-            ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.fragment_forecast);
-            fragment.onLocationChange();
+            mFragment.onLocationChange();
             mLocation = location;
         }
 
@@ -159,6 +164,18 @@ public class MainActivity extends BaseActivity {
         } else {
             Log.d(TAG, "openPreferredLocationMap: Couldn't call " + location + ", no receiving " +
                     "apps installed!");
+        }
+    }
+
+    @Override
+    public void onItemSelected(Uri dateUri) {
+        if (mTwoPane) {
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.DETAIL_URI, dateUri);
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(args);
+
+            setFragment(R.id.weather_detail_container, fragment, DETAIL_FRAGMENT_TAG);
         }
     }
 }

@@ -60,7 +60,7 @@ import android.support.v7.widget.Toolbar;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private ActionBar mActionBar;
+    protected ActionBar mActionBar;
 
     @LayoutRes
     protected abstract int getLayoutId();
