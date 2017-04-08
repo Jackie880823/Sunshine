@@ -146,6 +146,7 @@ public class MainActivity extends BaseActivity implements ForecastFragment.Callb
             mLocation = location;
         }
 
+        mFragment.setUseTodayLayout(!mTwoPane);
     }
 
     private void openPreferredLocationMap() {

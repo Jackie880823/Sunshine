@@ -109,8 +109,7 @@ public class ForecastAdapter extends CursorAdapter {
         // Read weather icon ID from cursor
         int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
         // Use placeholder image for now
-        @DrawableRes
-        int iconRes = R.drawable.art_clear;
+        @DrawableRes int iconRes = R.drawable.art_clear;
         switch (getItemViewType(cursor.getPosition())) {
             case VIEW_TYPE_TODAY:
                 iconRes = Utility.getArtResourceForWeatherCondition(weatherId);
@@ -150,7 +149,7 @@ public class ForecastAdapter extends CursorAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 && userTodayLayout ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        return (position == 0 && userTodayLayout) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     @Override
