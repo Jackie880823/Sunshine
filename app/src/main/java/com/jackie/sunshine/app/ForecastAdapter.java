@@ -110,7 +110,7 @@ public class ForecastAdapter extends CursorAdapter {
         int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
         // Use placeholder image for now
         @DrawableRes
-        int iconRes = R.mipmap.ic_launcher;
+        int iconRes = R.drawable.art_clear;
         switch (getItemViewType(cursor.getPosition())) {
             case VIEW_TYPE_TODAY:
                 iconRes = Utility.getArtResourceForWeatherCondition(weatherId);
