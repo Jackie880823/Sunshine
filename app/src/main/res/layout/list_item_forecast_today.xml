@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   ~             $                                                   $
   ~             $                       _oo0oo_                     $
@@ -43,38 +42,49 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tv_list_item_forecast"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
     android:gravity="center_vertical"
     android:minHeight="?attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/padding_large"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:theme="@style/AppTheme">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/list_item_date_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_normal_size"
+            tools:text="Today, June 19"/>
 
         <TextView
             android:id="@+id/list_item_high_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_large_size"
+            tools:text="22"/>
 
         <TextView
             android:id="@+id/list_item_low_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_medium_size"
+            tools:text="12"/>
     </LinearLayout>
 
     <LinearLayout
@@ -93,7 +103,10 @@
         <TextView
             android:id="@+id/list_item_forecast_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/font_normal_size"
+            tools:text="Clear"/>
     </LinearLayout>
 
 </LinearLayout>

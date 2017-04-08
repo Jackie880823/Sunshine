@@ -26,7 +26,7 @@
   ~             $                                                   $
   ~             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   ~
-  ~  Copyright (C) 2014 The Android Open Source Project
+  ~  Copyright (C) 2017 Jackie's The Android Open Source Project
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
   ~  you may not use this file except in compliance with the License.
@@ -42,17 +42,10 @@
   -->
 
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="padding_large">60dp</dimen>
-
-    <dimen name="icon_default_size">60dp</dimen>
-    <dimen name="icon_large_size">100dp</dimen>
-
-    <dimen name="font_small_size">14sp</dimen>
-    <dimen name="font_normal_size">22sp</dimen>
-    <dimen name="font_medium_size">36sp</dimen>
-    <dimen name="font_large_size">72sp</dimen>
+    <style name="SettingTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

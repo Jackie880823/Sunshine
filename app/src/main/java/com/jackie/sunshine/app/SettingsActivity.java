@@ -42,6 +42,7 @@
 
 package com.jackie.sunshine.app;
 
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -70,6 +71,10 @@ public class SettingsActivity extends PreferenceActivity implements Preference
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         // Add 'general' preferences, defined in the XML file
         // TODO: Add preferences from XML
         addPreferencesFromResource(R.xml.pref_general);

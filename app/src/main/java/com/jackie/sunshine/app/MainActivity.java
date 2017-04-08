@@ -68,7 +68,8 @@ public class MainActivity extends BaseActivity implements ForecastFragment.Callb
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
         mLocation = Utility.getPreferredLocation(this);
-        showHomeButton(false);
+        mActionBar.setLogo(R.drawable.ic_logo);
+        mActionBar.setDisplayShowTitleEnabled(false);
 
         mTwoPane = findViewById(R.id.weather_detail_container) != null;
 
