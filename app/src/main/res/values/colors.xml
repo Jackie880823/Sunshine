@@ -49,6 +49,10 @@
 
     <color name="hint_color">#646464</color>
 
-    <color name="grey">#CCCCCC</color>
     <color name="sunshine_light_blue">#FF64C2F4</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#CCCCCC</color>
+    <color name="grey_700">#646464</color>
+    <color name="black">#000000</color>
 </resources>

@@ -46,7 +46,7 @@
     android:id="@+id/tv_list_item_forecast"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
+    android:background="@drawable/today_touch_selector"
     android:gravity="center_vertical"
     android:minHeight="?attr/listPreferredItemHeight"
     android:orientation="horizontal"
@@ -59,39 +59,43 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
+        android:layout_weight="7.0"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/list_item_date_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_normal_size"
             tools:text="Today, June 19"/>
 
         <TextView
             android:id="@+id/list_item_high_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/font_large_size"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_x_large_size"
             tools:text="22"/>
 
         <TextView
             android:id="@+id/list_item_low_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/font_medium_size"
+            android:layout_marginStart="@dimen/content_normal_dimen"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large_size"
             tools:text="12"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
-        android:gravity="center_horizontal"
+        android:layout_weight="5.0"
+        android:gravity="center_horizontal|bottom"
         android:orientation="vertical">
 
         <ImageView
@@ -104,7 +108,10 @@
             android:id="@+id/list_item_forecast_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_normal_size"
             tools:text="Clear"/>
     </LinearLayout>

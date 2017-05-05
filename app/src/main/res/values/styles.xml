@@ -54,7 +54,10 @@
     <style name="ForecastTheme" parent="AppTheme.NoActionBar">
     </style>
 
-    <style name="SettingTheme" parent="AppTheme">
+    <!-- Settings activity action bar styles -->
+    <style name="ActionBar.V14.Sunshine.NoTitle" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:height">56dp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
