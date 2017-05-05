@@ -222,6 +222,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Read description from cursor and update view
         String weatherDescription = data.getString(COL_WEATHER_DESC);
         mTvDescription.setText(weatherDescription);
+        mIconView.setContentDescription(weatherDescription);
 
         boolean isMetric = Utility.isMetric(context);
 
