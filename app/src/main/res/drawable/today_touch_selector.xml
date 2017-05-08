@@ -44,5 +44,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/sunshine_light_blue" android:state_pressed="true" />
     <item android:drawable="@color/sunshine_light_blue" android:state_activated="true" />
-    <item android:drawable="?attr/colorPrimary" />
+    <item android:drawable="@color/colorPrimary" />
 </selector>
