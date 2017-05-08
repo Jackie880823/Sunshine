@@ -62,6 +62,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.jackie.sunshine.app.data.WeatherContract;
+import com.jackie.sunshine.app.service.SunshineService;
 
 /**
  * Created 16/11/21.
@@ -214,8 +215,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         String location = Utility.getPreferredLocation(getActivity());
 
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getContext());
-        weatherTask.execute(location);
+        Intent intent = new Intent();
+        intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
+        getActivity().startService(intent);
     }
 
     @Override
