@@ -42,6 +42,9 @@
 
 package com.jackie.sunshine.app;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -215,9 +218,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         String location = Utility.getPreferredLocation(getActivity());
 
-        Intent intent = new Intent();
+        Intent intent = new Intent(getContext(), SunshineService.AlarmReceiver.class);
         intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
-        getActivity().startService(intent);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
     }
 
     @Override

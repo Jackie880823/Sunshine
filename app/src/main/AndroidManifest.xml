@@ -95,6 +95,8 @@
         <service
             android:name=".service.SunshineService">
         </service>
+
+        <receiver android:name=".service.SunshineService$AlarmReceiver" />
     </application>
 
 </manifest>
