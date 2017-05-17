@@ -92,22 +92,18 @@
 
         <provider
             android:name=".data.WeatherProvider"
-            android:authorities="com.jackie.sunshine.app"
+            android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true"/>
-
-        <service
-            android:name=".service.SunshineService">
-        </service>
 
         <!-- SyncAdapter's dummy authentication service -->
         <service android:name=".sync.SunshineAuthenticatorService">
             <intent-filter>
-                <action android:name="android.accounts.AccountAutenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator"/>
+                android:resource="@xml/authenticator" />
         </service>
 
         <!-- The SyncAdapter service -->
@@ -115,14 +111,12 @@
             android:name=".sync.SunshineSyncService"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
+                <action android:name="android.content.SyncAdapter" />
             </intent-filter>
             <meta-data
                 android:name="android.content.SyncAdapter"
-                android:resource="@xml/sync_adapter"/>
+                android:resource="@xml/sync_adapter" />
         </service>
-
-        <receiver android:name=".service.SunshineService$AlarmReceiver"/>
     </application>
 
 </manifest>

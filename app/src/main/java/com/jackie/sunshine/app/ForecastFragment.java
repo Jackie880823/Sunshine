@@ -42,9 +42,6 @@
 
 package com.jackie.sunshine.app;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -65,7 +62,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.jackie.sunshine.app.data.WeatherContract;
-import com.jackie.sunshine.app.service.SunshineService;
 
 /**
  * Created 16/11/21.
@@ -219,16 +215,16 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateWeather() {
+        // SunshineSyncAdapter.syncImmediately(getContext());
+        // String location = Utility.getPreferredLocation(getActivity());
 
-        String location = Utility.getPreferredLocation(getActivity());
+        // Intent intent = new Intent(getContext(), SunshineService.AlarmReceiver.class);
+        // intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
+        // PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent,
+        //         PendingIntent.FLAG_ONE_SHOT);
 
-        Intent intent = new Intent(getContext(), SunshineService.AlarmReceiver.class);
-        intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+        // AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        // am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
     }
 
     @Override

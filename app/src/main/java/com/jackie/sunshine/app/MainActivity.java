@@ -49,6 +49,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.jackie.sunshine.app.sync.SunshineSyncAdapter;
+
 public class MainActivity extends BaseActivity implements ForecastFragment.Callback{
     private static final String TAG = "MainActivity";
     public static final String FORECAST_FRAGMENT_TAG = "FORECAST_FRAGMENT_TAG";
@@ -83,6 +85,8 @@ public class MainActivity extends BaseActivity implements ForecastFragment.Callb
         mFragment = (ForecastFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast);
         mFragment.setCallback(this);
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
