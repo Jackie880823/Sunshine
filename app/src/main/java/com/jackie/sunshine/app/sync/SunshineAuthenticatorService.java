@@ -25,7 +25,7 @@
  *             $                                                   $
  *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
  *
- *  Copyright (C) 2016 The Android Open Source Project
+ *  Copyright (C) 2017 Jackie's The Android Open Source Project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,13 +39,34 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.jackie.sunshine.app;
 
-import android.test.AndroidTestCase;
+package com.jackie.sunshine.app.sync;
 
-public class TestFetchWeatherTask extends AndroidTestCase{
-    static final String ADD_LOCATION_SETTING = "Sunnydale, CA";
-    static final String ADD_LOCATION_CITY = "Sunnydale";
-    static final double ADD_LOCATION_LAT = 34.425833;
-    static final double ADD_LOCATION_LON = -119.714167;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
+
+/**
+ * Created 17/5/12.
+ *
+ * @author Jackie
+ * @version 1.0
+ */
+
+public class SunshineAuthenticatorService extends Service {
+
+    private SunshineAuthenticator mAuthenticator;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mAuthenticator = new SunshineAuthenticator(this);
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mAuthenticator.getIBinder();
+    }
 }

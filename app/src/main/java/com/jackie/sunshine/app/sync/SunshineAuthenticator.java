@@ -25,7 +25,7 @@
  *             $                                                   $
  *             $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
  *
- *  Copyright (C) 2016 The Android Open Source Project
+ *  Copyright (C) 2017 Jackie's The Android Open Source Project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,13 +39,65 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.jackie.sunshine.app;
 
-import android.test.AndroidTestCase;
+package com.jackie.sunshine.app.sync;
 
-public class TestFetchWeatherTask extends AndroidTestCase{
-    static final String ADD_LOCATION_SETTING = "Sunnydale, CA";
-    static final String ADD_LOCATION_CITY = "Sunnydale";
-    static final double ADD_LOCATION_LAT = 34.425833;
-    static final double ADD_LOCATION_LON = -119.714167;
+import android.accounts.AbstractAccountAuthenticator;
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.NetworkErrorException;
+import android.content.Context;
+import android.os.Bundle;
+
+/**
+ * Created 17/5/12.
+ *
+ * @author Jackie
+ * @version 1.0
+ */
+
+public class SunshineAuthenticator extends AbstractAccountAuthenticator {
+    public SunshineAuthenticator(Context context) {
+        super(context);
+    }
+
+    @Override
+    public Bundle editProperties(AccountAuthenticatorResponse response, String accountType) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String
+            authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+        return null;
+    }
+
+    @Override
+    public Bundle confirmCredentials(AccountAuthenticatorResponse response, Account account,
+                                     Bundle options) throws NetworkErrorException {
+        return null;
+    }
+
+    @Override
+    public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String
+            authTokenType, Bundle options) throws NetworkErrorException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getAuthTokenLabel(String authTokenType) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account,
+                                    String authTokenType, Bundle options) throws
+            NetworkErrorException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features) throws NetworkErrorException {
+        throw new UnsupportedOperationException();
+    }
 }
