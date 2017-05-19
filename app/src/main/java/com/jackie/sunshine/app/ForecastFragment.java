@@ -51,6 +51,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -202,10 +203,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // case R.id.action_refresh:
-                // Log.d(TAG, "onOptionsItemSelected: selected action is refresh");
-                // updateWeather();
-                // return true;
+            case R.id.action_refresh:
+                Log.d(TAG, "onOptionsItemSelected: selected action is refresh");
+                updateWeather();
+                return true;
 
             case R.id.action_map:
                 openPreferredLocationMap();
@@ -224,7 +225,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         if (mForecastAdapter != null) {
             Cursor c = mForecastAdapter.getCursor();
             String postLat = c.getString(COL_COORD_LAT);
-            String postLong = c.getColumnName(COL_COORD_LONG);
+            String postLong = c.getString(COL_COORD_LONG);
             Uri geoLocation = Uri.parse("geo:" + postLat + "," + postLong);
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
