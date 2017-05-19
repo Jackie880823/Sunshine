@@ -51,7 +51,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,6 +61,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.jackie.sunshine.app.data.WeatherContract;
+import com.jackie.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
  * Created 16/11/21.
@@ -202,9 +202,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_refresh:
-                Log.d(TAG, "onOptionsItemSelected: selected action is refresh");
-                updateWeather();
+            // case R.id.action_refresh:
+                // Log.d(TAG, "onOptionsItemSelected: selected action is refresh");
+                // updateWeather();
+                // return true;
+
+            case R.id.action_map:
+                openPreferredLocationMap();
                 return true;
 
             default:
@@ -214,17 +218,26 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void openPreferredLocationMap() {
+
+        if (mForecastAdapter != null) {
+            Cursor c = mForecastAdapter.getCursor();
+            String postLat = c.getString(COL_COORD_LAT);
+            String postLong = c.getColumnName(COL_COORD_LONG);
+            Uri geoLocation = Uri.parse("geo:" + postLat + "," + postLong);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(geoLocation);
+
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+    }
+
     private void updateWeather() {
-        // SunshineSyncAdapter.syncImmediately(getContext());
-        // String location = Utility.getPreferredLocation(getActivity());
-
-        // Intent intent = new Intent(getContext(), SunshineService.AlarmReceiver.class);
-        // intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
-        // PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent,
-        //         PendingIntent.FLAG_ONE_SHOT);
-
-        // AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        // am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+        SunshineSyncAdapter.syncImmediately(getContext());
     }
 
     @Override

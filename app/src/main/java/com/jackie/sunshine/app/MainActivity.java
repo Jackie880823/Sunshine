@@ -123,10 +123,6 @@ public class MainActivity extends BaseActivity implements ForecastFragment.Callb
                 startActivity(intent);
                 return true;
 
-            case R.id.action_map:
-                openPreferredLocationMap();
-                return true;
-
             default:
                 break;
         }
@@ -152,25 +148,6 @@ public class MainActivity extends BaseActivity implements ForecastFragment.Callb
         }
 
         mFragment.setUseTodayLayout(!mTwoPane);
-    }
-
-    private void openPreferredLocationMap() {
-        String location = Utility.getPreferredLocation(this);
-
-        Uri geoLocation = Uri.parse("geo:0,0?")
-                .buildUpon()
-                .appendQueryParameter("q", location)
-                .build();
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Log.d(TAG, "openPreferredLocationMap: Couldn't call " + location + ", no receiving " +
-                    "apps installed!");
-        }
     }
 
     @Override
