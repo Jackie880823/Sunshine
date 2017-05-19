@@ -227,13 +227,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         boolean isMetric = Utility.isMetric(context);
 
         // Read high temperature from cursor and update view
-        String high = Utility.formatTemperature(context, data.getDouble(COL_WEATHER_MAX_TEMP),
-                isMetric);
+        String high = Utility.formatTemperature(context, data.getDouble(COL_WEATHER_MAX_TEMP));
         mTvHighTemp.setText(high);
 
         // Read low temperature from cursor and update view
-        String low = Utility.formatTemperature(context, data.getDouble(COL_WEATHER_MIN_TEMP),
-                isMetric);
+        String low = Utility.formatTemperature(context, data.getDouble(COL_WEATHER_MIN_TEMP));
         mTvLowTemp.setText(low);
 
         // Read humidity from cursor and update view
